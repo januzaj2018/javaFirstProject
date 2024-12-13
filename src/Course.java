@@ -5,13 +5,12 @@ public class Course {
     private int courseId;
     private String courseName;
     private int credits;
-    private List<Professor> professor;
 
     public Course(String courseName, int credits) {
         this.courseId= idGen++;
         this.courseName = courseName;
         this.credits = credits;
-        this.professor = new ArrayList<>();
+
     }
 
     public int getCourseId() {
@@ -30,11 +29,13 @@ public class Course {
         this.credits = credits;
     }
 
-    public List<Professor> getProfessor() {
-        return professor;
-    }
 
-    public void addProfessor(Professor professor) {
-        this.professor.add(professor);
+    @Override
+    public String toString() {
+        return "Course{" +
+                "courseId=" + courseId +
+                ", courseName='" + courseName + '\'' +
+                ", credits=" + credits +
+                '}';
     }
 }

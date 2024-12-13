@@ -30,8 +30,8 @@ public class University {
     public List<Professor> getProfessors() {
         return professors;
     }
-    public void setProfessors(List<Professor> professors) {
-        this.professors = professors;
+    public void addProfessor(Professor professor) {
+        professors.add(professor);
     }
     public List<Course> getCourses() {
         return courses;
@@ -40,4 +40,14 @@ public class University {
         this.courses.add(course);
     }
 
+    @Override
+    public String toString() {
+        return "University{" +
+                "id=" + id +
+                ", universityName='" + universityName + '\'' +
+                ", location='" + location + '\'' +
+                ", professors=" + professors +
+                ", courses=" + courses +
+                '}';
+    }
 }

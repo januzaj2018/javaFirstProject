@@ -33,4 +33,14 @@ public class Professor {
     public void addCourses(Course course) {
         this.courses.add(course);
     }
+
+    @Override
+    public String toString() {
+        return "Professor{" +
+                "id=" + id +
+                ", professorName='" + professorName + '\'' +
+                ", department='" + department + '\'' +
+                ", courses=" + courses +
+                '}';
+    }
 }
