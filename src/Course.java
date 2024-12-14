@@ -1,20 +1,18 @@
-import java.util.ArrayList;
-import java.util.List;
 public class Course {
     private static int idGen = 0;
-    private int courseId;
+    private final int id;
     private String courseName;
     private int credits;
 
     public Course(String courseName, int credits) {
-        this.courseId= idGen++;
+        this.id = idGen++;
         this.courseName = courseName;
         this.credits = credits;
 
     }
 
     public int getCourseId() {
-        return courseId;
+        return id;
     }
     public String getCourseName() {
         return courseName;
@@ -33,7 +31,7 @@ public class Course {
     @Override
     public String toString() {
         return "Course{" +
-                "courseId=" + courseId +
+                "courseId=" + id +
                 ", courseName='" + courseName + '\'' +
                 ", credits=" + credits +
                 '}';
