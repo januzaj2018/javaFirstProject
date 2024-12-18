@@ -83,6 +83,7 @@ public class University {
     }
     public void removeCoursesForProfessor(Professor professor){
         professorCourses.remove(professor);
+
     }
     public List<Professor> getProfessorsForCourse(Course course){
         return professorCourses.entrySet().stream()
@@ -109,7 +110,7 @@ public class University {
                 .toList() +
                 ", courses=" + courses.stream()
                 .map(Course::getCourseName)
-                .toList() +
+                .toList()+
                 '}';
     }
 
