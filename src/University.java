@@ -101,17 +101,22 @@ public class University {
 
     @Override
     public String toString() {
-        return "University{" +
-                "id=" + id +
-                ", name='" + universityName + '\'' +
-                ", location='" + location + '\'' +
-                ", professors=" + professors.stream()
-                .map(Professor::getProfessorName)
-                .toList() +
-                ", courses=" + courses.stream()
-                .map(Course::getCourseName)
-                .toList()+
-                '}';
+        return String.format(
+                "University ID: %d%nName: %s%nLocation: %s%nNumber of Professors: %d%nNumber of Courses: %d",
+                id, universityName, location, professors.size(), courses.size()
+        );
+    }
+
+    public int compareTo(University other){
+        int courseComparison = Integer.compare(courses.size(), other.courses.size());
+        if(courseComparison != 0){
+            return courseComparison;
+        }
+        int professorComparison = Integer.compare(professors.size(), other.professors.size());
+        if(professorComparison != 0){
+            return professorComparison;
+        }
+        return 0;
     }
 
 }
