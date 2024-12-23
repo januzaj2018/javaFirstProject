@@ -1,51 +1,31 @@
-public class Students {
-    private static int idGen = 0;
-    private final int id;
-    private String studentName;
+public class Students extends Person {
     private int age;
-    private String studentMajor;
-    public Students(String studentName, int age, String studentMajor) {
-        this.id = idGen++;
-        this.studentName = studentName;
+    private String major;
+
+    public Students(String name, int age, String major) {
+        super(name);
         this.age = age;
-        this.studentMajor = studentMajor;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setStudentMajor(String studentMajor) {
-        this.studentMajor = studentMajor;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getStudentName() {
-        return studentName;
+        this.major = major;
     }
 
     public int getAge() {
         return age;
     }
 
-    public String getStudentMajor() {
-        return studentMajor;
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
     }
 
     @Override
     public String toString() {
-        return "Students{" +
-                "id=" + id +
-                ", studentName='" + studentName + '\'' +
-                ", age=" + age +
-                ", studentMajor='" + studentMajor + '\'' +
-                '}';
+        return String.format("Student { %s, Age: %d, Major: %s }", super.toString(), age, major);
     }
 }

@@ -1,26 +1,9 @@
 import java.util.List;
 import java.util.Objects;
 
-public class Professor {
-    private static int idGen = 0;
-    private final int id;
-    private String professorName;
-
-    public Professor(String professorName) {
-        this.id = idGen++;
-        this.professorName = professorName;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getProfessorName() {
-        return professorName;
-    }
-
-    public void setProfessorName(String professorName) {
-        this.professorName = professorName;
+public class Professor extends Person {
+    public Professor(String name){
+        super(name);
     }
 
     // Get the courses assigned to this professor from the University
@@ -35,7 +18,7 @@ public class Professor {
 
     @Override
     public String toString() {
-        return String.format("Professor ID: %d%nName: %s", id, professorName);
+        return String.format("Professor { %s }", super.toString());
     }
 
     public int compareTo(Professor other, University university) {
@@ -48,16 +31,4 @@ public class Professor {
         return Integer.compare(this.getTotalWorkHours(university), other.getTotalWorkHours(university));
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Professor professor = (Professor) o;
-        return id == professor.id && Objects.equals(professorName, professor.professorName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, professorName);
-    }
 }
