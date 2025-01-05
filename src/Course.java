@@ -44,18 +44,9 @@ public class Course {
         return enrolledStudents.size();
     }
 
-    @Override
-    public String toString() {
-        return String.format(
-                "Course ID: %d%nName: %s%nCredits: %d%nStudents Enrolled: %d",
-                id, courseName, credits, getStudentCount()
-        );
+    public List<Students> getEnrolledStudents() {
+        return new ArrayList<>(enrolledStudents);
     }
-
-    public int compareTo(Course other) {
-        return Integer.compare(this.credits, other.credits);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,5 +58,17 @@ public class Course {
     @Override
     public int hashCode() {
         return Objects.hash(id, courseName, credits);
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Course ID: %d, Name: %s, Credits: %d, Students Enrolled: %d",
+                id, courseName, credits, getStudentCount()
+        );
+    }
+
+    public int compareTo(Course other) {
+        return Integer.compare(this.credits, other.credits);
     }
 }

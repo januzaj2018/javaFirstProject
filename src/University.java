@@ -1,122 +1,110 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 public class University {
     private static int idGen = 0;
     private final int id;
-    private static String universityName;
+    private String universityName;
     private String location;
     private List<Professor> professors;
-    private  List<Course> courses;
+    private List<Course> courses;
     private Map<Professor, List<Course>> professorCourses;
+
     public University(String universityName, String location) {
         this.id = idGen++;
         this.universityName = universityName;
         this.location = location;
-        this.professors = new ArrayList<Professor>();
+        this.professors = new ArrayList<>();
         this.courses = new ArrayList<>();
         this.professorCourses = new HashMap<>();
     }
+
     public int getId() {
         return id;
     }
-    public static String getName() {
+
+    public String getUniversityName() {
         return universityName;
     }
-    public void setName(String universityName) {
+
+    public void setUniversityName(String universityName) {
         this.universityName = universityName;
     }
+
     public String getLocation() {
         return location;
     }
+
     public void setLocation(String location) {
         this.location = location;
     }
+
     public List<Professor> getProfessors() {
-        return professors;
+        return new ArrayList<>(professors);
     }
+
     public void addProfessor(Professor professor) {
         professors.add(professor);
     }
-    public void removeProfessor(Professor professor){
-        this.professors.remove(professor);
+
+    public void removeProfessor(Professor professor) {
+        professors.remove(professor);
     }
+
     public List<Course> getCourses() {
-        return courses;
-    }
-    public void addCourse (Course course){
-        this.courses.add(course);
-    }
-    public void addCourses(List<Course> courses) {
-        this.courses.addAll(courses);
+        return new ArrayList<>(courses);
     }
 
-    public void removeCourse(Course course){
-        this.courses.remove(course);
+    public void addCourse(Course course) {
+        courses.add(course);
     }
-    public void assignCourse(Professor professor, Course course){
-        if (!professors.contains(professor)){
-            throw new IllegalArgumentException("Professor is not in the university");
-        }
-        if (!courses.contains(course)){
-            throw new IllegalArgumentException("Course is not offered by university");
-        }
-        if (!professorCourses.containsKey(professor)) {
-            professorCourses.put(professor, new ArrayList<>());
-        }
-        professorCourses.get(professor).add(course);
 
+    public void assignCourse(Professor professor, Course course) {
+        professorCourses.computeIfAbsent(professor, k -> new ArrayList<>()).add(course);
+    }
 
-    }
-    public void unassignCourse(Professor professor, Course course){
-        if (!professors.contains(professor)){
-            throw new IllegalArgumentException("Professor is not in the university");
-        }
-        if (!courses.contains(course)){
-            throw new IllegalArgumentException("Course is not offered by university");
-        }
-        professorCourses.get(professor).remove(course);
-    }
-    public List<Course> getCoursesForProfessor(Professor professor){
+    public List<Course> getCoursesForProfessor(Professor professor) {
         return professorCourses.getOrDefault(professor, new ArrayList<>());
     }
-    public void removeCoursesForProfessor(Professor professor){
-        professorCourses.remove(professor);
+    public List<Course> filterCoursesByCredits(int minCredits) {
+        return courses.stream()
+                .filter(course -> course.getCredits() >= minCredits)
+                .collect(Collectors.toList());
+    }
 
+    public Professor findProfessorByName(String name) {
+        return professors.stream()
+                .filter(professor -> professor.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
     }
-    public List<Professor> getProfessorsForCourse(Course course){
-        return professorCourses.entrySet().stream()
-                .filter(entry -> entry.getValue().contains(course))
-                .map(Map.Entry::getKey)
-                .toList();
+
+    public Course findCourseByName(String name) {
+        return courses.stream()
+                .filter(course -> course.getCourseName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
     }
-    public void removeProfessorsForCourse(Course course){
-        for (Map.Entry<Professor, List<Course>> entry : professorCourses.entrySet()){
-            if (entry.getValue().contains(course)){
-                professorCourses.get(entry.getKey()).remove(course);
-            }
-        }
+
+    public List<Course> sortCoursesByCredits() {
+        return courses.stream()
+                .sorted(Comparator.comparingInt(Course::getCredits))
+                .collect(Collectors.toList());
+    }
+
+    public List<Professor> sortProfessorsByCourses() {
+        return professors.stream()
+                .sorted((p1, p2) -> Integer.compare(
+                        getCoursesForProfessor(p2).size(),
+                        getCoursesForProfessor(p1).size()
+                ))
+                .collect(Collectors.toList());
     }
 
     @Override
     public String toString() {
         return String.format(
-                "University ID: %d%nName: %s%nLocation: %s%nNumber of Professors: %d%nNumber of Courses: %d",
+                "University ID: %d, Name: %s, Location: %s, Professors: %d, Courses: %d",
                 id, universityName, location, professors.size(), courses.size()
         );
     }
-
-    public int compareTo(University other){
-        int courseComparison = Integer.compare(courses.size(), other.courses.size());
-        if(courseComparison != 0){
-            return courseComparison;
-        }
-        int professorComparison = Integer.compare(professors.size(), other.professors.size());
-        if(professorComparison != 0){
-            return professorComparison;
-        }
-        return 0;
-    }
-
 }

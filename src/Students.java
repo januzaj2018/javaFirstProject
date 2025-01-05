@@ -1,21 +1,11 @@
 public class Students extends Person {
     private int age;
     private String major;
-
     public Students(String name, int age, String major) {
         super(name);
         this.age = age;
         this.major = major;
     }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
     public String getMajor() {
         return major;
     }

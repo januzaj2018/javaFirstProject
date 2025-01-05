@@ -2,6 +2,7 @@ public abstract class Person {
     private static int idGen = 0;
     private final int id;
     private String name;
+    private int age;
 
     public Person(String name) {
         this.id = idGen++;
@@ -14,6 +15,14 @@ public abstract class Person {
 
     public String getName() {
         return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public void setName(String name) {
