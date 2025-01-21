@@ -1,6 +1,6 @@
 public abstract class Person {
     private static int idGen = 0;
-    private final int id;
+    int id;
     private String name;
     private int age;
 

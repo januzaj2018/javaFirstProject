@@ -1,8 +1,9 @@
 import java.util.*;
+import java.sql.*;
 import java.util.stream.Collectors;
 public class University {
     private static int idGen = 0;
-    private final int id;
+    private int id;
     private String universityName;
     private String location;
     private List<Professor> professors;
@@ -99,6 +100,45 @@ public class University {
                 ))
                 .collect(Collectors.toList());
     }
+    public void saveToDatabase() {
+        String sql = "INSERT INTO university (name, location) VALUES (?, ?) RETURNING id";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, universityName);
+            stmt.setString(2, location);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                this.id = resultSet.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static List<University> getAllUniversities() {
+        List<University> universities = new ArrayList<>();
+        String sql = "SELECT * FROM university";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement stmt = connection.createStatement();
+             ResultSet resultSet = stmt.executeQuery(sql)) {
+
+            while (resultSet.next()) {
+                University university = new University(
+                        resultSet.getString("name"),
+                        resultSet.getString("location")
+                );
+                university.id = resultSet.getInt("id");
+                universities.add(university);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return universities;}
 
     @Override
     public String toString() {

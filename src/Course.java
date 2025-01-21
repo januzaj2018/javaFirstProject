@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.sql.*;
+
 
 public class Course {
     private static int idGen = 0;
@@ -46,6 +48,43 @@ public class Course {
 
     public List<Students> getEnrolledStudents() {
         return new ArrayList<>(enrolledStudents);
+    }
+    public void saveToDatabase(int professorId) {
+        String sql = "INSERT INTO course (name, credits, professor_id) VALUES (?, ?, ?)";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, courseName);
+            stmt.setInt(2, credits);
+            stmt.setInt(3, professorId);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<Course> getAllCourses() {
+        List<Course> courses = new ArrayList<>();
+        String sql = "SELECT * FROM course";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement stmt = connection.createStatement();
+             ResultSet resultSet = stmt.executeQuery(sql)) {
+
+            while (resultSet.next()) {
+                Course course = new Course(
+                        resultSet.getString("name"),
+                        resultSet.getInt("credits")
+                );
+                courses.add(course);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
     }
     @Override
     public boolean equals(Object o) {
